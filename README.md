@@ -1,3 +1,21 @@
+# Web Security and Honeypot Project - Group 9
+## Project Overview
+This project is a honeypot designed to attract and analyze malicious activity by simulating a vulnerable web application. The project features a website environment with 3 vulnerabilities, including Cross-Site Scripting (XSS), Local File Inclusion (LFI), and SQL Injection (SQLi), alongside logging mechanisms using elastic stack and kibana dashboards. It uses NGINX as the web server to host the application and is secured using in class taught principes such as security headers etc.
+
+The primary objective is to study attacker behavior while safeguarding sensitive data and ensuring a robust and controlled deployment. Additionally, the project incorporates features such as session management, user interaction tracking, and decoy services to enhance the honeypot's realism.
+
+## Installation and setup 
+### Installation Requirements
+ - Operating System: Debian-based system (Kali, Ubuntu, Kubuntu, Linux Mint, Zorin OS)
+ - Privileges: Execute as root user
+### Prerequisites
+ - NGINX installed on the server.
+ - PHP => 8.2
+ - sqlite3
+ - Git for cloning the repository.
+
+
+
 # template
 
 
