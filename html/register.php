@@ -7,12 +7,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $password = password_hash(trim($_POST['password']), PASSWORD_BCRYPT);
     
-    // Handle avatar upload
+    // Secure avatar upload
+    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif']; // Allowed file types
+    $max_file_size = 2 * 1024 * 1024; // Max size: 2MB
+    $upload_dir = 'uploads/';
+    $avatar = 'default.jpg'; // Default avatar if no file is uploaded
+
     if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
-        $avatar = $_FILES['avatar']['name'];
-        move_uploaded_file($_FILES['avatar']['tmp_name'], "uploads/$avatar");
-    } else { 
-        $avatar = 'default.jpg'; // Default avatar if no file is uploaded
+        $file_tmp = $_FILES['avatar']['tmp_name'];
+        $file_name = basename($_FILES['avatar']['name']);
+        $file_size = $_FILES['avatar']['size'];
+        $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
+        // Check file size
+        if ($file_size > $max_file_size) {
+            echo '<div class="message error">File size exceeds the maximum limit of 2MB.</div>';
+            exit;
+        }
+
+        // Check file extension
+        if (!in_array($file_ext, $allowed_extensions)) {
+            echo '<div class="message error">Invalid file type. Only JPG, JPEG, PNG, and GIF are allowed.</div>';
+            exit;
+        }
+
+        // Check if the file is a valid image
+        if (!getimagesize($file_tmp)) {
+            echo '<div class="message error">The uploaded file is not a valid image.</div>';
+            exit;
+        }
+
+        // Sanitize the file name
+        $safe_file_name = preg_replace("/[^a-zA-Z0-9_-]/", "", pathinfo($file_name, PATHINFO_FILENAME)) . '.' . $file_ext;
+
+        // Generate unique file name to prevent overwriting
+        $unique_file_name = uniqid('avatar_', true) . '.' . $file_ext;
+
+        // Move the file to the uploads directory
+        if (move_uploaded_file($file_tmp, $upload_dir . $unique_file_name)) {
+            $avatar = $unique_file_name;
+        } else {
+            echo '<div class="message error">Failed to upload the file.</div>';
+            exit;
+        }
     }
 
     // Prepare the SQL statement to insert the new user
