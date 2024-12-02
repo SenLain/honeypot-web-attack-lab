@@ -8,15 +8,56 @@ This project is a honeypot designed to attract and analyze malicious activity by
 The primary objective is to study attacker behavior while safeguarding sensitive data and ensuring a robust and controlled deployment. Additionally, the project incorporates features such as session management, user interaction tracking, and decoy services to enhance the honeypot's realism.
 
 ## Installation and setup 
+
 ### Installation Requirements
  - Operating System: Debian-based system (Kali, Ubuntu, Kubuntu, Linux Mint, Zorin OS)
  - Privileges: Execute as root user
-### Prerequisites
+### Prerequisites 
  - NGINX installed on the server.
+ - Filebeat for sending log files
+ - Modsecurity(with nginx plugin) as a WAF
  - PHP => 8.2
  - sqlite3
  - Git for cloning the repository.
+ - cowrie telnet honeypot
 
+ [Here]() you will find setp-by-step guide on how to install everything
+### Config
+First import the nginx virtual host configuration from [./config_files/nginx/default.conf](./config_files/nginx/default.conf) in this repo
+
+Also create certificate using openssl
+> `sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt`
+
+In the nginx.conf load modsec modules (the full file can also be found at [./config_files/nginx/nginx.conf](./config_files/nginx/nginx.conf))
+```
+load_module modules/ngx_http_modsecurity_module.so;
+```
+In the filebeat.yml file update the data output ([./config_files/filebeat/filebeat.yml](./config_files/filebeat/filebeat.yml))
+```
+output.elasticsearch:
+  # Array of hosts to connect to.
+  hosts: ["elk.hp.technet.howest.be:9200"]
+
+  # Performance preset - one of "balanced", "throughput", "scale",
+  # "latency", or "custom".
+  preset: balanced
+
+  # Protocol - either `http` (default) or `https`.
+  protocol: "https"
+
+  # Authentication credentials - either API key or username/password.
+  #api_key: "id:api_key"
+  username: "group-09"
+  password: "treflipcrook"
+  ssl:
+    enabled: true
+    ca_trusted_fingerprint:"283B8D5987C5EE09280451F532CCFB2E1AB777ED2955FA5F1B6FD1ADA85AB67E"
+    verification_mode: "none"
+    index: "group-09-filebeat"
+    setup.template.name: "group-09-filebeat"
+    setup.template.pattern: "group-09-filebeat"
+
+```
 
 
 # template
