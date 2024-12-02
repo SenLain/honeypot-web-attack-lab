@@ -13,6 +13,7 @@ The primary objective is to study attacker behavior while safeguarding sensitive
  - Operating System: Debian-based system (Kali, Ubuntu, Kubuntu, Linux Mint, Zorin OS)
  - Privileges: Execute as root user
 ### Prerequisites 
+[Here]() you will find setp-by-step guide on how to install everything
  - NGINX installed on the server.
  - Filebeat for sending log files
  - Modsecurity(with nginx plugin) as a WAF
@@ -21,7 +22,7 @@ The primary objective is to study attacker behavior while safeguarding sensitive
  - Git for cloning the repository.
  - cowrie telnet honeypot
 
- [Here]() you will find setp-by-step guide on how to install everything
+ 
 ### Config
 First import the nginx virtual host configuration from [./config_files/nginx/default.conf](./config_files/nginx/default.conf)
 
