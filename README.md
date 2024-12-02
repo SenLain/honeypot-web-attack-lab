@@ -60,8 +60,23 @@ output.elasticsearch:
 
 ```
 
+### Database 
+This honeypot uses 2 databases website.db that stores actual users and database.db, a fake database that stores fake users and products so that attackers can think that they successfully retrieve users data.
 
-# template
+To setup them up simply run the bash script
+```
+chmod +x create_database.sh
+./create_database.sh
+```
+The script will:
+
+- Create website.db and database.db.
+- Populate them with initial data from the database-dump/ folder.
+
+After that you can delete the 'database-dump' directory as well as the 'create_database.sh' script
+
+
+## S
 
 
 
