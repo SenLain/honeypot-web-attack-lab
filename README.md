@@ -23,7 +23,7 @@ The primary objective is to study attacker behavior while safeguarding sensitive
 
  [Here]() you will find setp-by-step guide on how to install everything
 ### Config
-First import the nginx virtual host configuration from [./config_files/nginx/default.conf](./config_files/nginx/default.conf) in this repo
+First import the nginx virtual host configuration from [./config_files/nginx/default.conf](./config_files/nginx/default.conf)
 
 Also create certificate using openssl
 > `sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt`
