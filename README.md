@@ -1,6 +1,9 @@
 # Web Security and Honeypot Project - Group 9
+# DISCLAIMER 
+While we poured our hearts and souls into this project, the time prevented us from completing the documentation on time. Despite the challenges, we are proud of the work we have done and the knowledge we've gained. The code itself has comments that explain some stuff, but we know that's not enough and we will still be working on it and do everything we can do, to finish this journey when we have time - but it will not be finished utill 9 am 02.12.2024 😟. We apologize for being late.
+
 ## Project Overview
-This project is a honeypot designed to attract and analyze malicious activity by simulating a vulnerable web application. The project features a website environment with 3 vulnerabilities, including Cross-Site Scripting (XSS), Local File Inclusion (LFI), and SQL Injection (SQLi), alongside logging mechanisms using elastic stack and kibana dashboards. It uses NGINX as the web server to host the application and is secured using in class taught principes such as security headers etc.
+This project is a honeypot designed to attract and analyze malicious activity by simulating a vulnerable web application. The project features a website environment with 3 vulnerabilities, including Cross-Site Scripting (XSS), Local File Inclusion (LFI), and SQL Injection (SQLi), alongside logging mechanisms using elastic stack and kibana dashboards, and also a telnet(port 2223) honeypot that is done using cowrie. It uses NGINX as the web server to host the application and is secured using in class taught principes such as security headers etc.
 
 The primary objective is to study attacker behavior while safeguarding sensitive data and ensuring a robust and controlled deployment. Additionally, the project incorporates features such as session management, user interaction tracking, and decoy services to enhance the honeypot's realism.
 
