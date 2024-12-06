@@ -72,6 +72,8 @@ The script will:
 
 - Create website.db and database.db.
 - Populate them with initial data from the database-dump/ folder.
+ - Add admin user with credentials:  
+admin:ThisIsTheM0stSecureServerEver
 
 After that you can delete the 'database-dump' directory as well as the 'create_database.sh' script
 
