@@ -1,4 +1,4 @@
-###################### Filebeat Configuration Example #########################
+####################### Filebeat Configuration Example #########################
 
 # This file is an example configuration file highlighting only the most common
 # options. The filebeat.reference.yml file from the same directory contains all the
@@ -11,7 +11,6 @@
 # configuration file.
 
 # ============================== Filebeat inputs ===============================
-
 filebeat.inputs:
 
 # Each - is an input. Most options can be set at the input level, so
@@ -25,13 +24,29 @@ filebeat.inputs:
   id: my-filestream-id
 
   # Change to true to enable this input configuration.
-  enabled: false
+  enabled: true
 
   # Paths that should be crawled and fetched. Glob based paths.
   paths:
     - /var/log/*.log
-    - /home/killerb/cowrie/var/log/cowrie/cowrie.log
-    #- c:\programdata\elasticsearch\logs\*
+#    - /home/killerb/cowrie/var/log/cowrie/*.log
+
+- type: log
+  paths:
+    - /usr/share/nginx/html/customLog.log
+  fields:
+    log_type: custom_log
+  fields_under_root: true
+  multiline:
+    pattern: '^\['
+    negate: true
+    match: after
+    pipeline: CustomLogs
+#    processors:
+#      - grok:
+#          patterns:
+#            - '%{TIMESTAMP_ISO8601:time} \| Username: %{WORD:username} \| AttackType: %{WORD:attack_type} \| Payload: "(?:[a-zA-Z0-9 ;<>:/\\-\\-"]+)"'
+#- c:\programdata\elasticsearch\logs\*
 
   # Exclude lines. A list of regular expressions to match. It drops the lines that are
   # matching any regular expression from the list.
