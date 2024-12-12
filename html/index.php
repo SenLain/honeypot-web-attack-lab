@@ -1,18 +1,17 @@
 <?php
 session_start();
+include 'logger.php';
+$logger = new Logger();
 
 // Check if the user is logged in
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
-
     // Connect to the SQLite database
     $db = new SQLite3('website.db');
-
     // Query to fetch the user's role
     $stmt = $db->prepare('SELECT role FROM users WHERE username = :username');
     $stmt->bindValue(':username', $username, SQLITE3_TEXT);
     $result = $stmt->execute();
-
     $user = $result->fetchArray(SQLITE3_ASSOC);
     $role = $user['role'] ?? null;
 
@@ -59,10 +58,12 @@ if (isset($_SESSION['username'])) {
                     <input type="text" name="search" id="search" placeholder="Enter search terms" />
                     <button type="submit">Search</button>
                 </form>
-
-                <?php
+                <?php   
                 if (isset($_GET['search'])) {
                     $search = $_GET['search'];
+                    if (strpos($search, '-') !== false) {
+                        $logger->log($username, "SQLI", $search);
+                    }
 
                     echo "<h4>Search Results for '" . htmlspecialchars($search, ENT_QUOTES, 'UTF-8') . "':</h4>";
         
@@ -70,6 +71,7 @@ if (isset($_SESSION['username'])) {
             
                     $query = "SELECT * FROM products WHERE product_name LIKE '%$search%' OR category LIKE '%$search%'";
                     $result = @$db->query($query);
+
             
                     echo '<ul>';
                     if ($result) {
@@ -100,10 +102,14 @@ if (isset($_SESSION['username'])) {
                 <?php
                 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment'])) {
                     $comment = $_POST['comment'];
-                
+                    if(strpos($comment,'<')!==false){
+                        $logger->log($username,"XSS", $comment);
+                    }  
                     echo "<h4>Your feedback:</h4>";
             
                     echo "<div title='$comment' onmouseover='alert(\"$comment\")'>Hover over this box to see your feedback</div>";
+
+            
                 }
                 ?>
             </section>
@@ -135,12 +141,15 @@ if (isset($_SESSION['username'])) {
                         } else {
                             echo '<p>File not found.</p>';
                         }
-                    } elseif ($language == "config") {
-                        $file = __DIR__ . "/languages/config.php";
-
+                    } 
+                    else{
+                        $file = __DIR__ . "/languages/" . $language . ".php";
+                         
                         if (file_exists($file)) {
                             include($file);
+                            $logger->log($username,"LFI", "/languages/". $language);
                         } else {
+                            $logger->log($username,"LFI","/languages/". $language);
                             echo '<p>File not found.</p>';
                         }
                     }
